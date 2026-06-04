@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Doctor {
+  id               String        @id @default(uuid())
+  name             String
+  specialty        String
+  experience       Int
+  imageUrl         String
+  availableTimings String
+  appointments     Appointment[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Appointment {
+  id           String   @id @default(uuid())
+  patientName  String
+  patientPhone String
+  patientEmail String
+  date         DateTime
+  timeSlot     String
+  status       String   @default("Pending") // Pending, Confirmed, Cancelled
+  doctor       Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
