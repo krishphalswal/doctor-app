@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/db'
 import { auth } from '@/auth'
+import { revalidatePath } from 'next/cache'
 
 export async function GET() {
   const session = await auth()
@@ -45,6 +46,9 @@ export async function POST(request: Request) {
       }
     })
 
+    revalidatePath('/')
+    revalidatePath('/doctors')
+
     return NextResponse.json(doctor, { status: 201 })
   } catch (error) {
     console.error('Error creating doctor:', error)
@@ -74,6 +78,10 @@ export async function DELETE(request: Request) {
     await prisma.doctor.delete({
       where: { id }
     })
+
+    revalidatePath('/')
+    revalidatePath('/doctors')
+    revalidatePath(`/doctors/${id}`)
 
     return NextResponse.json({ success: true })
   } catch (error) {
