@@ -14,7 +14,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           credentials?.username === "admin" &&
           credentials?.password === process.env.ADMIN_PASSWORD
         ) {
-          return { id: "1", name: "Admin", email: "admin@docbook.com" }
+          return { id: "1", name: "Admin", email: "admin@krishhospital.com" }
         }
         return null
       },

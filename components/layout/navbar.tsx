@@ -9,11 +9,14 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <Activity className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold tracking-tight">DocBook</span>
+            <span className="text-xl font-bold tracking-tight">Krish's Hospital</span>
           </Link>
           <nav className="ml-6 hidden items-center gap-6 md:flex">
             <Link href="/doctors" className="text-sm font-medium transition-colors hover:text-primary">
               Find Doctors
+            </Link>
+            <Link href="/appointments/status" className="text-sm font-medium transition-colors hover:text-primary">
+              Check Status
             </Link>
             <Link href="/#about" className="text-sm font-medium transition-colors hover:text-primary">
               About

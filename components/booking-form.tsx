@@ -82,8 +82,9 @@ export function BookingForm({ doctorId, availableTimings }: BookingFormProps) {
         throw new Error("Failed to book appointment")
       }
 
+      const appointment = await response.json()
       toast.success("Appointment booked successfully!")
-      router.push("/booking/success")
+      router.push(`/booking/success?phone=${values.patientPhone}&email=${values.patientEmail}`)
     } catch (error) {
       toast.error("Something went wrong. Please try again.")
       console.error(error)

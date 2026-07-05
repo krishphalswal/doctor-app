@@ -12,9 +12,9 @@ export default async function HomePage() {
   })
 
   return (
-    <div className="flex flex-col gap-16 pb-16">
+    <div className="flex flex-col gap-16 pb-16 w-full">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-50 py-24 md:py-32">
+      <section className="relative overflow-hidden bg-slate-50 py-24 md:py-32 w-full">
         <div className="container relative z-10">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-center">
             <div className="flex flex-col gap-6">
@@ -37,8 +37,8 @@ export default async function HomePage() {
               </div>
               <div className="flex items-center gap-8 mt-4">
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold">50+</span>
-                  <span className="text-sm text-muted-foreground">Expert Doctors</span>
+                  <span className="text-2xl font-bold">1</span>
+                  <span className="text-sm text-muted-foreground">Expert Doctor</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-2xl font-bold">10k+</span>
@@ -65,7 +65,7 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Doctors Section */}
-      <section className="container">
+      <section className="container w-full">
         <div className="flex flex-col items-center gap-4 text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Featured Doctors</h2>
           <p className="text-muted-foreground max-w-2xl">
@@ -118,7 +118,7 @@ export default async function HomePage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section id="about" className="bg-slate-900 text-white py-24">
+      <section id="about" className="bg-slate-900 text-white py-24 w-full">
         <div className="container">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 items-center">
             <div className="relative h-[400px]">
@@ -130,7 +130,7 @@ export default async function HomePage() {
               />
             </div>
             <div className="flex flex-col gap-6">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Why Choose DocBook?</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Why Choose Krish's Hospital?</h2>
               <p className="text-slate-400 text-lg">
                 We are committed to making healthcare accessible and convenient for everyone. Our platform offers several advantages.
               </p>

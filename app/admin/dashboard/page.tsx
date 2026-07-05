@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import prisma from "@/lib/db"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { 
   Table, 
   TableBody, 
@@ -12,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { format } from "date-fns"
-import { Search, Calendar, User, Phone, Mail, Clock } from "lucide-react"
+import { Search, Calendar, User, Phone, Mail, Clock, Settings } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { AppointmentActions } from "@/components/admin/appointment-actions"
 import { SignOutButton } from "@/components/admin/sign-out-button"
@@ -42,6 +44,11 @@ export default async function AdminDashboardPage() {
             <p className="text-muted-foreground">Manage and view all patient appointments.</p>
           </div>
           <div className="flex items-center gap-4">
+            <Link href="/admin/more">
+              <Button variant="outline" className="gap-2 border-primary/20 hover:border-primary/50 text-slate-800 font-semibold shadow-sm">
+                <Settings className="h-4 w-4 text-primary" /> Manage Doctors & Specs
+              </Button>
+            </Link>
             <div className="text-right hidden sm:block">
               <div className="text-sm font-medium">{session.user?.name}</div>
               <div className="text-xs text-muted-foreground">{session.user?.email}</div>

@@ -45,7 +45,7 @@ export default async function DoctorDetailsPage({ params }: DoctorDetailsPagePro
               </div>
               <h1 className="text-4xl font-bold tracking-tight">{doctor.name}</h1>
               <p className="text-muted-foreground text-lg max-w-lg">
-                Senior specialist with over {doctor.experience} years of experience in {doctor.specialty.toLowerCase()} and clinical research.
+                {doctor.about || `Senior specialist with over ${doctor.experience} years of experience in ${doctor.specialty.toLowerCase()} and clinical research.`}
               </p>
               <div className="flex flex-wrap gap-6 mt-2">
                 <div className="flex items-center gap-2">
@@ -79,22 +79,26 @@ export default async function DoctorDetailsPage({ params }: DoctorDetailsPagePro
                 <CardTitle className="text-xl">Education</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-4">
-                  <li className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <div className="font-semibold">Medical Degree (MD)</div>
-                      <div className="text-sm text-muted-foreground">University of Health Sciences, 2008</div>
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <div className="font-semibold">Specialization in {doctor.specialty}</div>
-                      <div className="text-sm text-muted-foreground">National Institute of Medicine, 2012</div>
-                    </div>
-                  </li>
-                </ul>
+                {doctor.education ? (
+                  <p className="text-muted-foreground whitespace-pre-line">{doctor.education}</p>
+                ) : (
+                  <ul className="space-y-4">
+                    <li className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <div className="font-semibold">Medical Degree (MD)</div>
+                        <div className="text-sm text-muted-foreground">University of Health Sciences, 2008</div>
+                      </div>
+                    </li>
+                    <li className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <div className="font-semibold">Specialization in {doctor.specialty}</div>
+                        <div className="text-sm text-muted-foreground">National Institute of Medicine, 2012</div>
+                      </div>
+                    </li>
+                  </ul>
+                )}
               </CardContent>
             </Card>
             <Card>
