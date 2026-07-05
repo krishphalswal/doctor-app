@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { CheckCircle2, Calendar, ArrowRight, ClipboardCheck, Search, Phone } from 'lucide-react'
+import { CheckCircle2, ArrowRight, ClipboardCheck, Search, Phone } from 'lucide-react'
 import { toast } from 'sonner'
 import { Suspense } from 'react'
 
@@ -53,7 +53,7 @@ function BookingSuccessInner() {
         <div className="flex flex-col items-center p-6 rounded-xl border bg-slate-50">
           <Phone className="h-6 w-6 text-primary mb-3" />
           <h3 className="font-semibold mb-1">Stay Notified</h3>
-          <p className="text-xs text-muted-foreground text-center">We'll reach out to you at {phone} once the doctor reviews your request.</p>
+          <p className="text-xs text-muted-foreground text-center">We&apos;ll reach out to you at {phone} once the doctor reviews your request.</p>
         </div>
       </div>
 

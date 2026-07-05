@@ -1,4 +1,5 @@
 import { Activity } from 'lucide-react'
+import Link from 'next/link'
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Activity className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold tracking-tight">Krish's Hospital</span>
+              <span className="text-xl font-bold tracking-tight">Krish&apos;s Hospital</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               Connecting patients with the best healthcare professionals. Easy, fast, and reliable doctor appointments at your fingertips.
@@ -17,9 +18,9 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="/" className="hover:text-primary transition-colors">Home</a></li>
-              <li><a href="/doctors" className="hover:text-primary transition-colors">Find Doctors</a></li>
-              <li><a href="/admin/login" className="hover:text-primary transition-colors">Admin Portal</a></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+              <li><Link href="/doctors" className="hover:text-primary transition-colors">Find Doctors</Link></li>
+              <li><Link href="/admin/login" className="hover:text-primary transition-colors">Admin Portal</Link></li>
             </ul>
           </div>
           <div>
@@ -33,7 +34,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Krish's Hospital. All rights reserved.
+          © {new Date().getFullYear()} Krish&apos;s Hospital. All rights reserved.
         </div>
       </div>
     </footer>

@@ -13,7 +13,7 @@ interface DoctorDetailsPageProps {
 }
 
 export default async function DoctorDetailsPage({ params }: DoctorDetailsPageProps) {
-  const { id } = await params
+  const { id } = params
   const doctor = await prisma.doctor.findUnique({
     where: { id }
   })

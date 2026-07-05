@@ -35,7 +35,7 @@ export function AppointmentActions({ appointmentId, currentStatus }: Appointment
 
       toast.success(`Appointment ${status.toLowerCase()}ed`)
       router.refresh()
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong")
     } finally {
       setIsLoading(null)

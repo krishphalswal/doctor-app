@@ -25,10 +25,24 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
 })
 
+interface AppointmentWithDoctor {
+  id: string
+  patientName: string
+  patientPhone: string
+  patientEmail: string
+  date: string
+  timeSlot: string
+  status: string
+  doctor: {
+    name: string
+    specialty: string
+  }
+}
+
 function AppointmentStatusInner() {
   const searchParams = useSearchParams()
   const [isSearching, setIsSearching] = useState(false)
-  const [appointments, setAppointments] = useState<any[]>([])
+  const [appointments, setAppointments] = useState<AppointmentWithDoctor[]>([])
   const [error, setError] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,8 +68,9 @@ function AppointmentStatusInner() {
 
       const data = await response.json()
       setAppointments(data)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An error occurred"
+      setError(errorMessage)
     } finally {
       setIsSearching(false)
     }
@@ -66,7 +81,10 @@ function AppointmentStatusInner() {
     const phone = searchParams.get('phone')
     const email = searchParams.get('email')
     if (phone && email) {
-      onSubmit({ phone, email })
+      const timer = setTimeout(() => {
+        onSubmit({ phone, email })
+      }, 0)
+      return () => clearTimeout(timer)
     }
   }, [searchParams, onSubmit])
 

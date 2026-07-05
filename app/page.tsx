@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Calendar, Star, Users, Clock } from 'lucide-react'
 import prisma from '@/lib/db'
@@ -130,7 +130,7 @@ export default async function HomePage() {
               />
             </div>
             <div className="flex flex-col gap-6">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Why Choose Krish's Hospital?</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Why Choose Krish&apos;s Hospital?</h2>
               <p className="text-slate-400 text-lg">
                 We are committed to making healthcare accessible and convenient for everyone. Our platform offers several advantages.
               </p>

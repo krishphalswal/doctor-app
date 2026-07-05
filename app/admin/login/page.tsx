@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
         router.push("/admin/dashboard")
         router.refresh()
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong")
     } finally {
       setIsLoading(false)

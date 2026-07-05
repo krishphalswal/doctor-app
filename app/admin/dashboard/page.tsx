@@ -27,13 +27,13 @@ export default async function AdminDashboardPage() {
   }
 
   const appointments = await prisma.appointment.findMany({
-    include: {
-      doctor: true
-    },
-    orderBy: {
-      date: 'desc'
-    }
-  })
+  include: {
+    doctor: true,
+  },
+  orderBy: {
+    date: "desc",
+  },
+})
 
   return (
     <div className="container py-12">

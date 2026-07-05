@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { 
   Card, 
   CardContent, 
@@ -113,8 +114,9 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
       setSpecialties((prev) => [...prev, data].sort((a, b) => a.name.localeCompare(b.name)))
       setSpecialtyName("")
       router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred")
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      toast.error(errorMessage)
     } finally {
       setIsSubmittingSpecialty(false)
     }
@@ -140,8 +142,9 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
       toast.success("Specialty deleted successfully!")
       setSpecialties((prev) => prev.filter((s) => s.id !== id))
       router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred")
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      toast.error(errorMessage)
     } finally {
       setDeletingId(null)
     }
@@ -190,8 +193,9 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
       setDocImageUrl("https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&h=400&auto=format&fit=crop")
       setDocTimings("Mon-Sat: 10AM-2PM, 5PM-7PM")
       router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred")
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      toast.error(errorMessage)
     } finally {
       setIsSubmittingDoctor(false)
     }
@@ -217,8 +221,9 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
       toast.success("Doctor deleted successfully!")
       setDoctors((prev) => prev.filter((d) => d.id !== id))
       router.refresh()
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred")
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      toast.error(errorMessage)
     } finally {
       setDeletingId(null)
     }
@@ -267,7 +272,7 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
               <CardContent className="pt-6">
                 <form onSubmit={handleAddDoctor} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="docName">Doctor's Name</Label>
+                    <Label htmlFor="docName">Doctor&apos;s Name</Label>
                     <Input
                       id="docName"
                       placeholder="e.g. Dr. Jane Smith"
@@ -421,10 +426,13 @@ export function MoreManagement({ initialDoctors, initialSpecialties }: MoreManag
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 relative rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
-                                  <img
+                                  <Image
                                     src={doctor.imageUrl}
                                     alt={doctor.name}
-                                    className="object-cover h-full w-full"
+                                    fill
+                                    sizes="40px"
+                                    unoptimized
+                                    className="object-cover"
                                   />
                                 </div>
                                 <div className="flex flex-col">
