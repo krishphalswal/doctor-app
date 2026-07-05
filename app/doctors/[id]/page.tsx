@@ -7,13 +7,13 @@ import prisma from '@/lib/db'
 import { BookingForm } from '@/components/booking-form'
 
 interface DoctorDetailsPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function DoctorDetailsPage({ params }: DoctorDetailsPageProps) {
-  const { id } = params
+  const { id } = await params
   const doctor = await prisma.doctor.findUnique({
     where: { id }
   })

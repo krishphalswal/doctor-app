@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       name: "Credentials",
@@ -10,9 +11,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        const expectedPassword = process.env.ADMIN_PASSWORD || "admin"
         if (
           credentials?.username === "admin" &&
-          credentials?.password === process.env.ADMIN_PASSWORD
+          credentials?.password === expectedPassword
         ) {
           return { id: "1", name: "Admin", email: "admin@krishhospital.com" }
         }
