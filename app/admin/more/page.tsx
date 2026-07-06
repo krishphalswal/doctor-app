@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import prisma from "@/lib/db"
+import { supabase } from "@/lib/supabase"
 import { MoreManagement } from "@/components/admin/more-management"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -13,13 +13,18 @@ export default async function AdminMorePage() {
     redirect("/admin/login")
   }
 
-  const doctors = await prisma.doctor.findMany({
-    orderBy: { name: 'asc' }
-  })
+  const { data: doctorsData } = await supabase
+    .from('Doctor')
+    .select('*')
+    .order('name', { ascending: true })
 
-  const specialties = await prisma.specialty.findMany({
-    orderBy: { name: 'asc' }
-  })
+  const { data: specialtiesData } = await supabase
+    .from('Specialty')
+    .select('*')
+    .order('name', { ascending: true })
+
+  const doctors = doctorsData || []
+  const specialties = specialtiesData || []
 
   return (
     <div className="container py-12">

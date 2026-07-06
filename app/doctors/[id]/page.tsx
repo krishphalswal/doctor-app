@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Star, Users, Clock, Award, CheckCircle2 } from 'lucide-react'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { BookingForm } from '@/components/booking-form'
 
 interface DoctorDetailsPageProps {
@@ -14,9 +14,11 @@ interface DoctorDetailsPageProps {
 
 export default async function DoctorDetailsPage({ params }: DoctorDetailsPageProps) {
   const { id } = await params
-  const doctor = await prisma.doctor.findUnique({
-    where: { id }
-  })
+  const { data: doctor } = await supabase
+    .from('Doctor')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle()
 
   if (!doctor) {
     notFound()

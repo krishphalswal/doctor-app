@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 
 export async function POST(request: Request) {
   try {
@@ -10,17 +10,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const appointment = await prisma.appointment.create({
-      data: {
+    const { data: appointment, error } = await supabase
+      .from('Appointment')
+      .insert({
         patientName,
         patientPhone,
         patientEmail,
-        date: new Date(date),
+        date: new Date(date).toISOString(),
         timeSlot,
         doctorId,
         status: 'Pending'
-      }
-    })
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating appointment in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json(appointment, { status: 201 })
   } catch (error) {

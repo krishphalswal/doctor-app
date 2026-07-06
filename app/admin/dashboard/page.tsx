@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
-import prisma from "@/lib/db"
+import { supabase } from "@/lib/supabase"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { 
@@ -26,14 +26,12 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login")
   }
 
-  const appointments = await prisma.appointment.findMany({
-  include: {
-    doctor: true,
-  },
-  orderBy: {
-    date: "desc",
-  },
-})
+  const { data: appointmentsData } = await supabase
+    .from('Appointment')
+    .select('*, doctor:Doctor(*)')
+    .order('date', { ascending: false })
+
+  const appointments = appointmentsData || []
 
   return (
     <div className="container py-12">
@@ -136,8 +134,8 @@ export default async function AdminDashboardPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-sm">{appointment.doctor.name}</div>
-                        <div className="text-xs text-muted-foreground">{appointment.doctor.specialty}</div>
+                        <div className="text-sm">{appointment.doctor?.name || "Unknown Doctor"}</div>
+                        <div className="text-xs text-muted-foreground">{appointment.doctor?.specialty || "N/A"}</div>
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col gap-1">

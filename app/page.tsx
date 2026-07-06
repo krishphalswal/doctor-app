@@ -4,12 +4,15 @@ import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Calendar, Star, Users, Clock } from 'lucide-react'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 
 export default async function HomePage() {
-  const featuredDoctors = await prisma.doctor.findMany({
-    take: 3
-  })
+  const { data: featuredDoctors } = await supabase
+    .from('Doctor')
+    .select('*')
+    .limit(3)
+
+  const doctorsList = featuredDoctors || []
 
   return (
     <div className="flex flex-col gap-16 pb-16 w-full">
@@ -73,7 +76,7 @@ export default async function HomePage() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredDoctors.map((doctor) => (
+          {doctorsList.map((doctor) => (
             <Card key={doctor.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
               <div className="relative h-64 w-full bg-slate-100">
                 <Image 

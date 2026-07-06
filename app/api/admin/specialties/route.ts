@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { auth } from '@/auth'
 
 export async function GET() {
@@ -9,9 +9,15 @@ export async function GET() {
   }
 
   try {
-    const specialties = await prisma.specialty.findMany({
-      orderBy: { name: 'asc' }
-    })
+    const { data: specialties, error } = await supabase
+      .from('Specialty')
+      .select('*')
+      .order('name', { ascending: true })
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
     return NextResponse.json(specialties)
   } catch (error) {
     console.error('Error fetching specialties:', error)
@@ -40,17 +46,26 @@ export async function POST(request: Request) {
       .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
 
-    const existing = await prisma.specialty.findUnique({
-      where: { name: formattedName }
-    })
+    const { data: existing } = await supabase
+      .from('Specialty')
+      .select('*')
+      .eq('name', formattedName)
+      .maybeSingle()
 
     if (existing) {
       return NextResponse.json({ error: 'Specialty already exists' }, { status: 400 })
     }
 
-    const specialty = await prisma.specialty.create({
-      data: { name: formattedName }
-    })
+    const { data: specialty, error } = await supabase
+      .from('Specialty')
+      .insert({ name: formattedName })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating specialty in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json(specialty, { status: 201 })
   } catch (error) {
@@ -73,9 +88,15 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 })
     }
 
-    await prisma.specialty.delete({
-      where: { id }
-    })
+    const { error } = await supabase
+      .from('Specialty')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error deleting specialty in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

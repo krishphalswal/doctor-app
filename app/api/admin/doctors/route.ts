@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 
@@ -10,9 +10,15 @@ export async function GET() {
   }
 
   try {
-    const doctors = await prisma.doctor.findMany({
-      orderBy: { name: 'asc' }
-    })
+    const { data: doctors, error } = await supabase
+      .from('Doctor')
+      .select('*')
+      .order('name', { ascending: true })
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
     return NextResponse.json(doctors)
   } catch (error) {
     console.error('Error fetching doctors:', error)
@@ -34,8 +40,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const doctor = await prisma.doctor.create({
-      data: {
+    const { data: doctor, error } = await supabase
+      .from('Doctor')
+      .insert({
         name,
         specialty,
         experience: Number(experience),
@@ -43,8 +50,14 @@ export async function POST(request: Request) {
         education,
         imageUrl,
         availableTimings
-      }
-    })
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating doctor in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     revalidatePath('/')
     revalidatePath('/doctors')
@@ -71,13 +84,25 @@ export async function DELETE(request: Request) {
     }
 
     // First delete any appointments for this doctor to avoid constraint errors
-    await prisma.appointment.deleteMany({
-      where: { doctorId: id }
-    })
+    const { error: apptError } = await supabase
+      .from('Appointment')
+      .delete()
+      .eq('doctorId', id)
 
-    await prisma.doctor.delete({
-      where: { id }
-    })
+    if (apptError) {
+      console.error('Error deleting doctor appointments in Supabase:', apptError)
+      return NextResponse.json({ error: apptError.message }, { status: 500 })
+    }
+
+    const { error: doctorError } = await supabase
+      .from('Doctor')
+      .delete()
+      .eq('id', id)
+
+    if (doctorError) {
+      console.error('Error deleting doctor in Supabase:', doctorError)
+      return NextResponse.json({ error: doctorError.message }, { status: 500 })
+    }
 
     revalidatePath('/')
     revalidatePath('/doctors')

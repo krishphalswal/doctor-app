@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -11,23 +11,17 @@ export async function GET(request: Request) {
   }
 
   try {
-    const appointments = await prisma.appointment.findMany({
-      where: {
-        patientPhone: phone,
-        patientEmail: email
-      },
-      include: {
-        doctor: {
-          select: {
-            name: true,
-            specialty: true
-          }
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
+    const { data: appointments, error } = await supabase
+      .from('Appointment')
+      .select('*, doctor:Doctor(name, specialty)')
+      .eq('patientPhone', phone)
+      .eq('patientEmail', email)
+      .order('createdAt', { ascending: false })
+
+    if (error) {
+      console.error('Error looking up appointment in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     if (!appointments || appointments.length === 0) {
       return NextResponse.json({ error: 'No appointments found for this phone and email' }, { status: 404 })

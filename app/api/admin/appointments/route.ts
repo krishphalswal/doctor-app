@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { auth } from '@/auth'
 
 export async function PATCH(request: Request) {
@@ -16,10 +16,17 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const appointment = await prisma.appointment.update({
-      where: { id },
-      data: { status }
-    })
+    const { data: appointment, error } = await supabase
+      .from('Appointment')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error updating appointment in Supabase:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json(appointment)
   } catch (error) {

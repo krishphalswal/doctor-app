@@ -5,10 +5,11 @@ import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Star, Users, Clock, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import prisma from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 
 export default async function DoctorsPage() {
-  const doctors = await prisma.doctor.findMany()
+  const { data: doctorsData } = await supabase.from('Doctor').select('*')
+  const doctors = doctorsData || []
 
   return (
     <div className="container py-12">
